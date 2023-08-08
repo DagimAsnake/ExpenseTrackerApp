@@ -1,12 +1,15 @@
-import React from 'react'
+import React, {useContext} from 'react'
 
 import ExpensesOutput from '../Components/ExpensesOut/ExpensesOutput'
+import { ExpensesContext } from '../Store/ExpensesContext'
 
 const AllExpensesScreen = () => {
 
+  const expensesCtx = useContext(ExpensesContext)
+
   return (
     <>
-      <ExpensesOutput expensePeriod={"Total"} />
+      <ExpensesOutput expenses={expensesCtx.expenses} expensePeriod={"Total"} fallBackText={"No registerd expenses found."} />
     </>
   )
 }
