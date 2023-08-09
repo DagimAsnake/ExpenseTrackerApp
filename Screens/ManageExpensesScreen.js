@@ -14,6 +14,8 @@ const ManageExpensesScreen = ({route, navigation}) => {
   const expenseId = route.params?.expenseId
   const isEditing = !!expenseId
 
+  const selectedExpense = expenseCtx.expenses.find(expense => expense.id === expenseId)
+
   useLayoutEffect(() => {
     navigation.setOptions({
       title: isEditing ? "Edit Expense" : "Add Expense"
@@ -29,33 +31,18 @@ const ManageExpensesScreen = ({route, navigation}) => {
     navigation.goBack()
   }
 
-  function confirmHandler () {
+  function confirmHandler (expensesData) {
     if(isEditing){
-      expenseCtx.updateExpenses( 
-        expenseId,
-        {
-        description: "Test!!!!",
-        amount: 42.99,
-        date: new Date("2023-08-05")
-    })
+      expenseCtx.updateExpenses( expenseId, expensesData)
     } else {
-      expenseCtx.addExpenses(
-        {
-          description: "Test",
-          amount: 20.15,
-          date: new Date("2023-08-08")
-      })
+      expenseCtx.addExpenses(expensesData)
     }
     navigation.goBack()
   }
 
   return (
     <View style={styles.container}>
-      <ExpensesForm />
-      <View style={styles.buttons}>
-        <Button style={styles.button} onPress={cancelHandler} mode={"flat"}>Cancel</Button>
-        <Button style={styles.button} onPress={confirmHandler}>{isEditing ? "Update" : "Add"}</Button>
-      </View>
+      <ExpensesForm defaultValues={selectedExpense} onSubmit={confirmHandler} onCancel={cancelHandler} submitLabel={isEditing ? "Update" : "Add"} />
         {isEditing && (
           <View style={styles.deleteContainer}>
             <IconButton name={"trash"} color={GlobalStyles.colors.error500} size={36} onPress={deleteExpenseHandler} />
@@ -72,15 +59,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     backgroundColor: GlobalStyles.colors.primary800
-  },
-  buttons: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  button: {
-    minWidth: 120,
-    marginHorizontal: 8
   },
   deleteContainer: {
     marginTop: 16,
