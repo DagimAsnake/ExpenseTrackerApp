@@ -4,6 +4,7 @@ import {View, StyleSheet} from 'react-native'
 import { GlobalStyles } from '../Constants/Styles'
 import IconButton from '../Components/Ui/IconButton'
 import Button from '../Components/Ui/Button'
+import ExpensesForm from '../Components/ManageExpenses/ExpensesForm'
 
 import { ExpensesContext } from '../Store/ExpensesContext'
 
@@ -50,6 +51,7 @@ const ManageExpensesScreen = ({route, navigation}) => {
 
   return (
     <View style={styles.container}>
+      <ExpensesForm />
       <View style={styles.buttons}>
         <Button style={styles.button} onPress={cancelHandler} mode={"flat"}>Cancel</Button>
         <Button style={styles.button} onPress={confirmHandler}>{isEditing ? "Update" : "Add"}</Button>
